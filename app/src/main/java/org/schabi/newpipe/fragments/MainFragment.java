@@ -24,12 +24,12 @@ import org.schabi.newpipe.R;
 import org.schabi.newpipe.extractor.NewPipe;
 import org.schabi.newpipe.extractor.StreamingService;
 import org.schabi.newpipe.extractor.kiosk.KioskList;
-import org.schabi.newpipe.fragments.list.channel.ChannelFragment;
-import org.schabi.newpipe.fragments.list.feed.FeedFragment;
+//import org.schabi.newpipe.fragments.list.channel.ChannelFragment;
+//import org.schabi.newpipe.fragments.list.feed.FeedFragment;
 import org.schabi.newpipe.fragments.list.kiosk.KioskFragment;
-import org.schabi.newpipe.fragments.subscription.SubscriptionFragment;
-import org.schabi.newpipe.report.ErrorActivity;
-import org.schabi.newpipe.report.UserAction;
+//import org.schabi.newpipe.fragments.subscription.SubscriptionFragment;
+//import org.schabi.newpipe.report.ErrorActivity;
+//import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.util.Constants;
 import org.schabi.newpipe.util.KioskTranslator;
 import org.schabi.newpipe.util.NavigationHelper;
@@ -37,15 +37,15 @@ import org.schabi.newpipe.util.ThemeHelper;
 
 import java.util.concurrent.ExecutionException;
 
-public class MainFragment extends BaseFragment implements TabLayout.OnTabSelectedListener {
+public class MainFragment extends BaseFragment  implements TabLayout.OnTabSelectedListener {
     private ViewPager viewPager;
     private boolean showBlankTab = false;
 
-    private static final int FALLBACK_SERVICE_ID = 0; // Youtbe
+    public static final int FALLBACK_SERVICE_ID = 0; // Youtbe
     private static final String FALLBACK_CHANNEL_URL =
             "https://www.youtube.com/channel/UC-9-kyTW8ZkZNDHQJ6FgpwQ";
     private static final String FALLBACK_CHANNEL_NAME = "Music";
-    private static final String FALLBACK_KIOSK_ID = "Trending";
+    public static final String FALLBACK_KIOSK_ID = "Trending";
 
     public int currentServiceId = -1;
 
@@ -76,6 +76,16 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
     protected void initViews(View rootView, Bundle savedInstanceState) {
         super.initViews(rootView, savedInstanceState);
 
+        /*try {
+            SharedPreferences preferences =
+                    PreferenceManager.getDefaultSharedPreferences(getActivity());
+            int serviceId = preferences.getInt(getString(R.string.main_page_selected_service),
+                    FALLBACK_SERVICE_ID);
+            String kioskId = preferences.getString(getString(R.string.main_page_selectd_kiosk_id),
+                    FALLBACK_KIOSK_ID);
+            KioskFragment fragment = KioskFragment.getInstance(serviceId, kioskId);
+            fragment.useAsFrontPage(true);
+        }catch (Exception e){}*/
         TabLayout tabLayout = rootView.findViewById(R.id.main_tab_layout);
         viewPager = rootView.findViewById(R.id.pager);
 
@@ -118,16 +128,17 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
         super.onCreateOptionsMenu(menu, inflater);
         if (DEBUG) Log.d(TAG, "onCreateOptionsMenu() called with: menu = [" + menu + "], inflater = [" + inflater + "]");
         inflater.inflate(R.menu.main_fragment_menu, menu);
-        SubMenu kioskMenu = menu.addSubMenu(getString(R.string.kiosk));
-        try {
-            createKioskMenu(kioskMenu, inflater);
-        } catch (Exception e) {
-            ErrorActivity.reportError(activity, e,
+       // SubMenu kioskMenu = menu.addSubMenu(getString(R.string.kiosk));
+       // try {
+       //     createKioskMenu(kioskMenu, inflater);
+       // } catch (Exception e) {
+            /*ErrorActivity.reportError(activity, e,
                     activity.getClass(),
                     null,
                     ErrorActivity.ErrorInfo.make(UserAction.UI_ERROR,
                             "none", "", R.string.app_ui_crash));
-        }
+*/
+       // }
 
         ActionBar supportActionBar = activity.getSupportActionBar();
         if (supportActionBar != null) {
@@ -147,7 +158,7 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     /*//////////////////////////////////////////////////////////////////////////
     // Tabs
-    //////////////////////////////////////////////////////////////////////////*/
+    /////////////////////////////////////////////////////////////////////////*/
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
@@ -175,7 +186,7 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
+            /*switch (position) {
                 case 0:
                     if(PreferenceManager.getDefaultSharedPreferences(getActivity())
                             .getString(getString(R.string.main_page_content_key), getString(R.string.blank_page_key))
@@ -183,12 +194,13 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
                         return new SubscriptionFragment();
                     } else {
                         return getMainPageFramgent();
-                    }
+                 //   }
                 case 1:
                     return new SubscriptionFragment();
                 default:
                     return new BlankFragment();
-            }
+            }*/
+            return getMainPageFramgent();
         }
 
         @Override
@@ -214,7 +226,7 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
     //////////////////////////////////////////////////////////////////////////*/
 
     private Fragment getMainPageFramgent() {
-        try {
+        /*try {
             SharedPreferences preferences =
                     PreferenceManager.getDefaultSharedPreferences(getActivity());
             final String setMainPage = preferences.getString(getString(R.string.main_page_content_key),
@@ -255,7 +267,18 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
                     ErrorActivity.ErrorInfo.make(UserAction.UI_ERROR,
                             "none", "", R.string.app_ui_crash));
             return new BlankFragment();
-        }
+        }*/
+        try {
+            SharedPreferences preferences =
+                    PreferenceManager.getDefaultSharedPreferences(getActivity());
+            int serviceId = preferences.getInt(getString(R.string.main_page_selected_service),
+                    FALLBACK_SERVICE_ID);
+            String kioskId = preferences.getString(getString(R.string.main_page_selectd_kiosk_id),
+                    FALLBACK_KIOSK_ID);
+            KioskFragment fragment = KioskFragment.getInstance(serviceId, kioskId);
+            fragment.useAsFrontPage(true);
+            return fragment;
+        } catch (Exception e){ return null;}
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -276,11 +299,12 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
                             try {
                                 NavigationHelper.openKioskFragment(getFragmentManager(), currentServiceId, ks);
                             } catch (Exception e) {
-                                ErrorActivity.reportError(activity, e,
+                                /*ErrorActivity.reportError(activity, e,
                                         activity.getClass(),
                                         null,
                                         ErrorActivity.ErrorInfo.make(UserAction.UI_ERROR,
                                                 "none", "", R.string.app_ui_crash));
+                                                */
                             }
                             return true;
                         }

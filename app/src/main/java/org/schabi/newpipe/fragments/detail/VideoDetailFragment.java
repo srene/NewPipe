@@ -46,8 +46,8 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.schabi.newpipe.R;
-import org.schabi.newpipe.ReCaptchaActivity;
-import org.schabi.newpipe.download.DownloadDialog;
+//import org.schabi.newpipe.ReCaptchaActivity;
+//import org.schabi.newpipe.download.DownloadDialog;
 import org.schabi.newpipe.extractor.InfoItem;
 import org.schabi.newpipe.extractor.MediaFormat;
 import org.schabi.newpipe.extractor.NewPipe;
@@ -60,16 +60,16 @@ import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.extractor.stream.VideoStream;
 import org.schabi.newpipe.fragments.BackPressable;
 import org.schabi.newpipe.fragments.BaseStateFragment;
-import org.schabi.newpipe.history.HistoryListener;
+//import org.schabi.newpipe.history.HistoryListener;
 import org.schabi.newpipe.info_list.InfoItemBuilder;
-import org.schabi.newpipe.player.BackgroundPlayer;
-import org.schabi.newpipe.player.MainVideoPlayer;
-import org.schabi.newpipe.player.PopupVideoPlayer;
-import org.schabi.newpipe.player.old.PlayVideoActivity;
+//import org.schabi.newpipe.player.BackgroundPlayer;
+//import org.schabi.newpipe.player.MainVideoPlayer;
+//import org.schabi.newpipe.player.PopupVideoPlayer;
+//import org.schabi.newpipe.player.old.PlayVideoActivity;
 import org.schabi.newpipe.playlist.PlayQueue;
 import org.schabi.newpipe.playlist.SinglePlayQueue;
-import org.schabi.newpipe.report.ErrorActivity;
-import org.schabi.newpipe.report.UserAction;
+//import org.schabi.newpipe.report.ErrorActivity;
+//import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.util.Constants;
 import org.schabi.newpipe.util.ExtractorHelper;
 import org.schabi.newpipe.util.InfoCache;
@@ -129,7 +129,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
     // Views
     //////////////////////////////////////////////////////////////////////////*/
 
-    private Spinner spinnerToolbar;
+    //private Spinner spinnerToolbar;
 
     private ParallaxScrollView parallaxScrollRootView;
     private LinearLayout contentRootLayoutHiding;
@@ -232,8 +232,8 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
     @Override
     public void onDestroyView() {
         if (DEBUG) Log.d(TAG, "onDestroyView() called");
-        spinnerToolbar.setOnItemSelectedListener(null);
-        spinnerToolbar.setAdapter(null);
+        //spinnerToolbar.setOnItemSelectedListener(null);
+        //spinnerToolbar.setAdapter(null);
         super.onDestroyView();
     }
 
@@ -241,11 +241,11 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case ReCaptchaActivity.RECAPTCHA_REQUEST:
+           /* case ReCaptchaActivity.RECAPTCHA_REQUEST:
                 if (resultCode == Activity.RESULT_OK) {
                     NavigationHelper.openVideoDetailFragment(getFragmentManager(), serviceId, url, name);
                 } else Log.e(TAG, "ReCaptcha failed");
-                break;
+                break;*/
             default:
                 Log.e(TAG, "Request code from activity not supported [" + requestCode + "]");
                 break;
@@ -322,16 +322,16 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
 
         switch (v.getId()) {
             case R.id.detail_controls_background:
-                openBackgroundPlayer(false);
+         //       openBackgroundPlayer(false);
                 break;
             case R.id.detail_controls_popup:
-                openPopupPlayer(false);
+         //       openPopupPlayer(false);
                 break;
             case R.id.detail_uploader_root_layout:
                 if (currentInfo.uploader_url == null || currentInfo.uploader_url.isEmpty()) {
                     Log.w(TAG, "Can't open channel because we got no channel URL");
                 } else {
-                    NavigationHelper.openChannelFragment(getFragmentManager(), currentInfo.service_id, currentInfo.uploader_url, currentInfo.uploader_name);
+               //     NavigationHelper.openChannelFragment(getFragmentManager(), currentInfo.service_id, currentInfo.uploader_url, currentInfo.uploader_name);
                 }
                 break;
             case R.id.detail_thumbnail_root_layout:
@@ -352,10 +352,10 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
 
         switch (v.getId()) {
             case R.id.detail_controls_background:
-                openBackgroundPlayer(true);
+         //       openBackgroundPlayer(true);
                 break;
             case R.id.detail_controls_popup:
-                openPopupPlayer(true);
+         //       openPopupPlayer(true);
                 break;
         }
 
@@ -404,7 +404,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
     protected void initViews(View rootView, Bundle savedInstanceState) {
         super.initViews(rootView, savedInstanceState);
 
-        spinnerToolbar = activity.findViewById(R.id.toolbar).findViewById(R.id.toolbar_spinner);
+     //   spinnerToolbar = activity.findViewById(R.id.toolbar).findViewById(R.id.toolbar_spinner);
 
         parallaxScrollRootView = rootView.findViewById(R.id.detail_main_content);
 
@@ -501,7 +501,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
             imageLoader.displayImage(info.thumbnail_url, thumbnailImageView, DISPLAY_THUMBNAIL_OPTIONS, new SimpleImageLoadingListener() {
                 @Override
                 public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                    ErrorActivity.reportError(activity, failReason.getCause(), null, activity.findViewById(android.R.id.content), ErrorActivity.ErrorInfo.make(UserAction.LOAD_IMAGE, NewPipe.getNameOfService(currentInfo.service_id), imageUri, R.string.could_not_load_thumbnails));
+        //            ErrorActivity.reportError(activity, failReason.getCause(), null, activity.findViewById(android.R.id.content), ErrorActivity.ErrorInfo.make(UserAction.LOAD_IMAGE, NewPipe.getNameOfService(currentInfo.service_id), imageUri, R.string.could_not_load_thumbnails));
                 }
             });
         }
@@ -582,7 +582,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
     private void setupActionBarHandler(final StreamInfo info) {
         if (DEBUG) Log.d(TAG, "setupActionBarHandler() called with: info = [" + info + "]");
         sortedStreamVideosList = new ArrayList<>(ListHelper.getSortedStreamVideosList(activity, info.video_streams, info.video_only_streams, false));
-        actionBarHandler.setupStreamList(sortedStreamVideosList, spinnerToolbar);
+       // actionBarHandler.setupStreamList(sortedStreamVideosList, spinnerToolbar);
         actionBarHandler.setOnShareListener(new ActionBarHandler.OnActionListener() {
             @Override
             public void onActionSelected(int selectedStreamId) {
@@ -604,7 +604,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
             }
         });
 
-        actionBarHandler.setOnPlayWithKodiListener(new ActionBarHandler.OnActionListener() {
+        /*actionBarHandler.setOnPlayWithKodiListener(new ActionBarHandler.OnActionListener() {
             @Override
             public void onActionSelected(int selectedStreamId) {
                 try {
@@ -634,7 +634,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -762,7 +762,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
     // Play Utils
     //////////////////////////////////////////////////////////////////////////*/
 
-    private void openBackgroundPlayer(final boolean append) {
+    /*private void openBackgroundPlayer(final boolean append) {
         AudioStream audioStream = currentInfo.audio_streams.get(ListHelper.getDefaultAudioFormat(activity, currentInfo.audio_streams));
 
         if (activity instanceof HistoryListener) {
@@ -777,9 +777,9 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
         } else {
             openExternalBackgroundPlayer(audioStream);
         }
-    }
+    }*/
 
-    private void openPopupPlayer(final boolean append) {
+    /*private void openPopupPlayer(final boolean append) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !PermissionHelper.checkSystemAlertWindowPermission(activity)) {
             Toast toast = Toast.makeText(activity, R.string.msg_popup_permission, Toast.LENGTH_LONG);
             TextView messageView = toast.getView().findViewById(android.R.id.message);
@@ -788,9 +788,9 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
             return;
         }
 
-        if (activity instanceof HistoryListener) {
-            ((HistoryListener) activity).onVideoPlayed(currentInfo, getSelectedVideoStream());
-        }
+      //  if (activity instanceof HistoryListener) {
+      /      ((HistoryListener) activity).onVideoPlayed(currentInfo, getSelectedVideoStream());
+      /  }
 
         final PlayQueue playQueue = new SinglePlayQueue(currentInfo);
         final Intent intent;
@@ -802,14 +802,14 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
             intent = NavigationHelper.getPlayerIntent(activity, PopupVideoPlayer.class, playQueue, getSelectedVideoStream().resolution);
         }
         activity.startService(intent);
-    }
+    }*/
 
     private void openVideoPlayer() {
         VideoStream selectedVideoStream = getSelectedVideoStream();
 
-        if (activity instanceof HistoryListener) {
-            ((HistoryListener) activity).onVideoPlayed(currentInfo, selectedVideoStream);
-        }
+        //if (activity instanceof HistoryListener) {
+        //    ((HistoryListener) activity).onVideoPlayed(currentInfo, selectedVideoStream);
+       // }
 
         if (PreferenceManager.getDefaultSharedPreferences(activity).getBoolean(this.getString(R.string.use_external_video_player_key), false)) {
             openExternalVideoPlayer(selectedVideoStream);
@@ -819,7 +819,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
     }
 
 
-    private void openNormalBackgroundPlayer(final boolean append) {
+    /*private void openNormalBackgroundPlayer(final boolean append) {
         final PlayQueue playQueue = new SinglePlayQueue(currentInfo);
         if (append) {
             activity.startService(NavigationHelper.getPlayerEnqueueIntent(activity, BackgroundPlayer.class, playQueue));
@@ -828,7 +828,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
             activity.startService(NavigationHelper.getPlayerIntent(activity, BackgroundPlayer.class, playQueue));
             Toast.makeText(activity, R.string.background_player_playing_toast, Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
     private void openExternalBackgroundPlayer(AudioStream audioStream) {
         Intent intent;
@@ -919,6 +919,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
     }
 
     private VideoStream getSelectedVideoStream() {
+        Log.d(TAG,sortedStreamVideosList.size()+" "+actionBarHandler.getSelectedVideoStream());
         return sortedStreamVideosList.get(actionBarHandler.getSelectedVideoStream());
     }
 
@@ -1041,7 +1042,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
         super.showLoading();
 
         animateView(contentRootLayoutHiding, false, 200);
-        animateView(spinnerToolbar, false, 200);
+//        animateView(spinnerToolbar, false, 200);
         animateView(thumbnailPlayButton, false, 50);
 
         videoTitleTextView.setText(name != null ? name : "");
@@ -1105,7 +1106,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
         }
         prepareDescription(info.description);
 
-        animateView(spinnerToolbar, true, 500);
+       // animateView(spinnerToolbar, true, 500);
         setupActionBarHandler(info);
         initThumbnailViews(info);
         initRelatedVideos(info);
@@ -1116,7 +1117,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
         setTitleToUrl(info.service_id, info.url, info.name);
 
         if (!info.errors.isEmpty()) {
-            showSnackBarError(info.errors, UserAction.REQUESTED_STREAM, NewPipe.getNameOfService(info.service_id), info.url, 0);
+        //    showSnackBarError(info.errors, UserAction.REQUESTED_STREAM, NewPipe.getNameOfService(info.service_id), info.url, 0);
         }
 
         if (autoPlayEnabled) {
@@ -1143,7 +1144,7 @@ public class VideoDetailFragment extends BaseStateFragment<StreamInfo> implement
         } else {
             int errorId = exception instanceof YoutubeStreamExtractor.DecryptException ? R.string.youtube_signature_decryption_error :
                     exception instanceof ParsingException ? R.string.parsing_error : R.string.general_error;
-            onUnrecoverableError(exception, UserAction.REQUESTED_STREAM, NewPipe.getNameOfService(serviceId), url, errorId);
+         //   onUnrecoverableError(exception, UserAction.REQUESTED_STREAM, NewPipe.getNameOfService(serviceId), url, errorId);
         }
 
         return true;

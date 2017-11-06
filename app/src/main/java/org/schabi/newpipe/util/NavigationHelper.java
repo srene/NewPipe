@@ -1,6 +1,5 @@
 package org.schabi.newpipe.util;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -8,30 +7,31 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import org.schabi.newpipe.MainActivity;
+import org.schabi.newpipe.MainActivity2;
 import org.schabi.newpipe.R;
-import org.schabi.newpipe.about.AboutActivity;
-import org.schabi.newpipe.download.DownloadActivity;
+//import org.schabi.newpipe.about.AboutActivity;
+//import org.schabi.newpipe.download.DownloadActivity;
 import org.schabi.newpipe.extractor.NewPipe;
 import org.schabi.newpipe.extractor.ServiceList;
 import org.schabi.newpipe.extractor.StreamingService;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.fragments.MainFragment;
+import org.schabi.newpipe.fragments.detail.BasePlayer;
 import org.schabi.newpipe.fragments.detail.VideoDetailFragment;
-import org.schabi.newpipe.fragments.list.channel.ChannelFragment;
-import org.schabi.newpipe.fragments.list.feed.FeedFragment;
+//import org.schabi.newpipe.fragments.list.channel.ChannelFragment;
+//import org.schabi.newpipe.fragments.list.feed.FeedFragment;
+import org.schabi.newpipe.fragments.detail.VideoPlayer;
 import org.schabi.newpipe.fragments.list.kiosk.KioskFragment;
-import org.schabi.newpipe.fragments.list.playlist.PlaylistFragment;
+//import org.schabi.newpipe.fragments.list.playlist.PlaylistFragment;
 import org.schabi.newpipe.fragments.list.search.SearchFragment;
-import org.schabi.newpipe.history.HistoryActivity;
-import org.schabi.newpipe.player.BasePlayer;
-import org.schabi.newpipe.player.VideoPlayer;
+//import org.schabi.newpipe.history.HistoryActivity;
+//import org.schabi.newpipe.player.BasePlayer;
+//import org.schabi.newpipe.player.VideoPlayer;
 import org.schabi.newpipe.playlist.PlayQueue;
-import org.schabi.newpipe.settings.SettingsActivity;
+//import org.schabi.newpipe.settings.SettingsActivity;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class NavigationHelper {
@@ -132,7 +132,7 @@ public class NavigationHelper {
                 .commit();
     }
 
-    public static void openChannelFragment(FragmentManager fragmentManager, int serviceId, String url, String name) {
+    /*public static void openChannelFragment(FragmentManager fragmentManager, int serviceId, String url, String name) {
         if (name == null) name = "";
         fragmentManager.beginTransaction()
                 .setCustomAnimations(R.animator.custom_fade_in, R.animator.custom_fade_out, R.animator.custom_fade_in, R.animator.custom_fade_out)
@@ -156,7 +156,7 @@ public class NavigationHelper {
                 .replace(R.id.fragment_holder, new FeedFragment())
                 .addToBackStack(null)
                 .commit();
-    }
+    }*/
 
     public static void openKioskFragment(FragmentManager fragmentManager, int serviceId, String kioskId)
         throws ExtractionException {
@@ -172,7 +172,7 @@ public class NavigationHelper {
     //////////////////////////////////////////////////////////////////////////*/
 
     public static void openSearch(Context context, int serviceId, String query) {
-        Intent mIntent = new Intent(context, MainActivity.class);
+        Intent mIntent = new Intent(context, MainActivity2.class);
         mIntent.putExtra(Constants.KEY_SERVICE_ID, serviceId);
         mIntent.putExtra(Constants.KEY_QUERY, query);
         mIntent.putExtra(Constants.KEY_OPEN_SEARCH, true);
@@ -200,13 +200,13 @@ public class NavigationHelper {
     }
 
     public static void openMainActivity(Context context) {
-        Intent mIntent = new Intent(context, MainActivity.class);
+        Intent mIntent = new Intent(context, MainActivity2.class);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(mIntent);
     }
 
-    public static void openAbout(Context context) {
+   /* public static void openAbout(Context context) {
         Intent intent = new Intent(context, AboutActivity.class);
         context.startActivity(intent);
     }
@@ -228,7 +228,7 @@ public class NavigationHelper {
         Intent intent = new Intent(activity, DownloadActivity.class);
         activity.startActivity(intent);
         return true;
-    }
+    }*/
 
     /*//////////////////////////////////////////////////////////////////////////
     // Link handling
@@ -248,7 +248,7 @@ public class NavigationHelper {
     }
 
     private static Intent getOpenIntent(Context context, String url, int serviceId, StreamingService.LinkType type) {
-        Intent mIntent = new Intent(context, MainActivity.class);
+        Intent mIntent = new Intent(context, MainActivity2.class);
         mIntent.putExtra(Constants.KEY_SERVICE_ID, serviceId);
         mIntent.putExtra(Constants.KEY_URL, url);
         mIntent.putExtra(Constants.KEY_LINK_TYPE, type);

@@ -22,7 +22,7 @@ import org.schabi.newpipe.extractor.kiosk.KioskInfo;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.fragments.list.BaseListInfoFragment;
 import org.schabi.newpipe.info_list.InfoItemBuilder;
-import org.schabi.newpipe.report.UserAction;
+//import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.util.ExtractorHelper;
 import org.schabi.newpipe.util.KioskTranslator;
 import org.schabi.newpipe.util.NavigationHelper;
@@ -92,7 +92,7 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
         super.setUserVisibleHint(isVisibleToUser);
         if(useAsFrontPage && isVisibleToUser) {
             try {
-                activity.getSupportActionBar().setTitle(KioskTranslator.getTranslatedKioskName(kioskId, getActivity()));
+             //   activity.getSupportActionBar().setTitle(KioskTranslator.getTranslatedKioskName(kioskId, getActivity()));
             } catch (Exception e) {
                 onError(e);
             }
@@ -150,13 +150,13 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
         super.handleResult(result);
 
         String title = KioskTranslator.getTranslatedKioskName(result.id, getActivity());
-        ActionBar supportActionBar = activity.getSupportActionBar();
-        supportActionBar.setTitle(title);
+    //    ActionBar supportActionBar = activity.getSupportActionBar();
+    //    supportActionBar.setTitle(title);
 
         if (!result.errors.isEmpty()) {
-            showSnackBarError(result.errors,
-                    UserAction.REQUESTED_PLAYLIST,
-                    NewPipe.getNameOfService(result.service_id), result.url, 0);
+      //      showSnackBarError(result.errors,
+      //              UserAction.REQUESTED_PLAYLIST,
+      //              NewPipe.getNameOfService(result.service_id), result.url, 0);
         }
     }
 
@@ -165,9 +165,9 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
         super.handleNextItems(result);
 
         if (!result.errors.isEmpty()) {
-            showSnackBarError(result.errors,
-                    UserAction.REQUESTED_PLAYLIST, NewPipe.getNameOfService(serviceId)
-                    , "Get next page of: " + url, 0);
+       //     showSnackBarError(result.errors,
+       //             UserAction.REQUESTED_PLAYLIST, NewPipe.getNameOfService(serviceId)
+       //             , "Get next page of: " + url, 0);
         }
     }
 }

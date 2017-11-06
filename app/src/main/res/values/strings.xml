@@ -1,5 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+
+    <string name="drawer_item_general">List of Content</string>
+    <string name="drawer_item_service">ubiCDN service</string>
+    <string name="drawer_item_faces">NDN Faces</string>
+    <string name="drawer_item_routes">NDN Routes</string>
+    <string name="drawer_item_strategies">Strategies</string>
+    <string name="drawer_item_logcat">Logcat</string>
+
+
+
     <string name="app_name" translatable="false">NewPipe</string>
     <string name="main_bg_subtitle">Tap search to get started</string>
     <string name="view_count_text">%1$s views</string>

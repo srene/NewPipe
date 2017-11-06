@@ -21,7 +21,6 @@ package org.schabi.newpipe.util;
 
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -31,7 +30,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.schabi.newpipe.BuildConfig;
-import org.schabi.newpipe.MainActivity;
+import org.schabi.newpipe.MainActivity2;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -114,7 +113,7 @@ public class StateSaver {
      */
     @Nullable
     private static SavedState tryToRestore(@NonNull SavedState savedState, @NonNull WriteRead writeRead) {
-        if (MainActivity.DEBUG) {
+        if (MainActivity2.DEBUG) {
             Log.d(TAG, "tryToRestore() called with: savedState = [" + savedState + "], writeRead = [" + writeRead + "]");
         }
 
@@ -123,7 +122,7 @@ public class StateSaver {
             Queue<Object> savedObjects = stateObjectsHolder.remove(savedState.getPrefixFileSaved());
             if (savedObjects != null) {
                 writeRead.readFrom(savedObjects);
-                if (MainActivity.DEBUG) {
+                if (MainActivity2.DEBUG) {
                     Log.d(TAG, "tryToSave: reading objects from holder > " + savedObjects + ", stateObjectsHolder > " + stateObjectsHolder);
                 }
                 return savedState;
@@ -131,7 +130,7 @@ public class StateSaver {
 
             File file = new File(savedState.getPathFileSaved());
             if (!file.exists()) {
-                if(MainActivity.DEBUG) {
+                if(MainActivity2.DEBUG) {
                     Log.d(TAG, "Cache file doesn't exist: " + file.getAbsolutePath());
                 }
                 return null;
@@ -200,7 +199,7 @@ public class StateSaver {
      */
     @Nullable
     private static SavedState tryToSave(boolean isChangingConfig, final String prefixFileName, String suffixFileName, WriteRead writeRead) {
-        if (MainActivity.DEBUG) {
+        if (MainActivity2.DEBUG) {
             Log.d(TAG, "tryToSave() called with: isChangingConfig = [" + isChangingConfig + "], prefixFileName = [" + prefixFileName + "], suffixFileName = [" + suffixFileName + "], writeRead = [" + writeRead + "]");
         }
 
@@ -212,7 +211,7 @@ public class StateSaver {
                 stateObjectsHolder.put(prefixFileName, savedObjects);
                 return new SavedState(prefixFileName, "");
             } else {
-                if(MainActivity.DEBUG) Log.d(TAG, "Nothing to save");
+                if(MainActivity2.DEBUG) Log.d(TAG, "Nothing to save");
                 return null;
             }
         }
@@ -271,7 +270,7 @@ public class StateSaver {
      * Delete the cache file contained in the savedState and remove any possible-existing value in the memory-cache.
      */
     public static void onDestroy(SavedState savedState) {
-        if (MainActivity.DEBUG) Log.d(TAG, "onDestroy() called with: savedState = [" + savedState + "]");
+        if (MainActivity2.DEBUG) Log.d(TAG, "onDestroy() called with: savedState = [" + savedState + "]");
 
         if (savedState != null && !TextUtils.isEmpty(savedState.getPathFileSaved())) {
             stateObjectsHolder.remove(savedState.getPrefixFileSaved());
@@ -287,7 +286,7 @@ public class StateSaver {
      * Clear all the files in cache (in memory and disk).
      */
     public static void clearStateFiles() {
-        if (MainActivity.DEBUG) Log.d(TAG, "clearStateFiles() called");
+        if (MainActivity2.DEBUG) Log.d(TAG, "clearStateFiles() called");
 
         stateObjectsHolder.clear();
         File cacheDir = new File(cacheDirPath);

@@ -1,31 +1,25 @@
 package org.schabi.newpipe.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.view.RxView;
 
 import org.schabi.newpipe.BaseFragment;
-import org.schabi.newpipe.MainActivity;
 import org.schabi.newpipe.R;
-import org.schabi.newpipe.ReCaptchaActivity;
+//import org.schabi.newpipe.ReCaptchaActivity;
 import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
-import org.schabi.newpipe.report.ErrorActivity;
-import org.schabi.newpipe.report.UserAction;
+//import org.schabi.newpipe.report.ErrorActivity;
+//import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.util.ExtractorHelper;
 import org.schabi.newpipe.util.InfoCache;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -190,7 +184,7 @@ public abstract class BaseStateFragment<I> extends BaseFragment implements ViewC
         }
 
         if (exception instanceof ReCaptchaException) {
-            onReCaptchaException();
+       //     onReCaptchaException();
             return true;
         } else if (exception instanceof IOException) {
             showError(getString(R.string.network_error), true);
@@ -200,7 +194,7 @@ public abstract class BaseStateFragment<I> extends BaseFragment implements ViewC
         return false;
     }
 
-    public void onReCaptchaException() {
+    /*public void onReCaptchaException() {
         if (DEBUG) Log.d(TAG, "onReCaptchaException() called");
         Toast.makeText(activity, R.string.recaptcha_request_toast, Toast.LENGTH_LONG).show();
         // Starting ReCaptcha Challenge Activity
@@ -225,9 +219,7 @@ public abstract class BaseStateFragment<I> extends BaseFragment implements ViewC
         showSnackBarError(Collections.singletonList(exception), userAction, serviceName, request, errorId);
     }
 
-    /**
-     * Show a SnackBar and only call ErrorActivity#reportError IF we a find a valid view (otherwise the error screen appears)
-     */
+
     public void showSnackBarError(List<Throwable> exception, UserAction userAction, String serviceName, String request, @StringRes int errorId) {
         if (DEBUG) {
             Log.d(TAG, "showSnackBarError() called with: exception = [" + exception + "], userAction = [" + userAction + "], request = [" + request + "], errorId = [" + errorId + "]");
@@ -237,5 +229,5 @@ public abstract class BaseStateFragment<I> extends BaseFragment implements ViewC
         if (rootView == null) return;
 
         ErrorActivity.reportError(getContext(), exception, MainActivity.class, rootView, ErrorActivity.ErrorInfo.make(userAction, serviceName, request, errorId));
-    }
+    }*/
 }

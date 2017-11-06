@@ -32,7 +32,7 @@ import android.widget.TextView;
 
 import org.schabi.newpipe.NewPipeDatabase;
 import org.schabi.newpipe.R;
-import org.schabi.newpipe.ReCaptchaActivity;
+//import org.schabi.newpipe.ReCaptchaActivity;
 import org.schabi.newpipe.database.history.dao.SearchHistoryDAO;
 import org.schabi.newpipe.database.history.model.SearchHistoryEntry;
 import org.schabi.newpipe.extractor.InfoItem;
@@ -44,8 +44,8 @@ import org.schabi.newpipe.extractor.search.SearchEngine;
 import org.schabi.newpipe.extractor.search.SearchResult;
 import org.schabi.newpipe.fragments.BackPressable;
 import org.schabi.newpipe.fragments.list.BaseListFragment;
-import org.schabi.newpipe.history.HistoryListener;
-import org.schabi.newpipe.report.UserAction;
+//import org.schabi.newpipe.history.HistoryListener;
+//import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.util.Constants;
 import org.schabi.newpipe.util.AnimationUtils;
 import org.schabi.newpipe.util.ExtractorHelper;
@@ -252,11 +252,11 @@ public class SearchFragment extends BaseListFragment<SearchResult, ListExtractor
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case ReCaptchaActivity.RECAPTCHA_REQUEST:
+            /*case ReCaptchaActivity.RECAPTCHA_REQUEST:
                 if (resultCode == Activity.RESULT_OK && !TextUtils.isEmpty(searchQuery)) {
                     search(searchQuery);
                 } else Log.e(TAG, "ReCaptcha failed");
-                break;
+                break;*/
 
             default:
                 Log.e(TAG, "Request code from activity not supported [" + requestCode + "]");
@@ -554,7 +554,7 @@ public class SearchFragment extends BaseListFragment<SearchResult, ListExtractor
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        showSnackBarError(throwable, UserAction.SOMETHING_ELSE, "none", "Deleting item failed", R.string.general_error);
+                                        //showSnackBarError(throwable, UserAction.SOMETHING_ELSE, "none", "Deleting item failed", R.string.general_error);
                                     }
                                 }));
                     }
@@ -712,10 +712,10 @@ public class SearchFragment extends BaseListFragment<SearchResult, ListExtractor
         hideSuggestionsPanel();
         hideKeyboardSearch();
 
-        if (activity instanceof HistoryListener) {
+       /* if (activity instanceof HistoryListener) {
             ((HistoryListener) activity).onSearch(serviceId, query);
             suggestionPublisher.onNext(query);
-        }
+        }*/
 
         startLoading(false);
     }
@@ -822,7 +822,7 @@ public class SearchFragment extends BaseListFragment<SearchResult, ListExtractor
         if (super.onError(exception)) return;
 
         int errorId = exception instanceof ParsingException ? R.string.parsing_error : R.string.general_error;
-        onUnrecoverableError(exception, UserAction.GET_SUGGESTIONS, NewPipe.getNameOfService(serviceId), searchQuery, errorId);
+     //   onUnrecoverableError(exception, UserAction.GET_SUGGESTIONS, NewPipe.getNameOfService(serviceId), searchQuery, errorId);
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -849,7 +849,7 @@ public class SearchFragment extends BaseListFragment<SearchResult, ListExtractor
     @Override
     public void handleResult(@NonNull SearchResult result) {
         if (!result.errors.isEmpty()) {
-            showSnackBarError(result.errors, UserAction.SEARCHED, NewPipe.getNameOfService(serviceId), searchQuery, 0);
+     //       showSnackBarError(result.errors, UserAction.SEARCHED, NewPipe.getNameOfService(serviceId), searchQuery, 0);
         }
 
         lastSearchedQuery = searchQuery;
@@ -873,10 +873,10 @@ public class SearchFragment extends BaseListFragment<SearchResult, ListExtractor
         currentPage = Integer.parseInt(result.nextItemsUrl);
         infoListAdapter.addInfoItemList(result.nextItemsList);
 
-        if (!result.errors.isEmpty()) {
+       /* if (!result.errors.isEmpty()) {
             showSnackBarError(result.errors, UserAction.SEARCHED, NewPipe.getNameOfService(serviceId)
                     , "\"" + searchQuery + "\" → page " + currentPage, 0);
-        }
+        }*/
         super.handleNextItems(result);
     }
 
@@ -889,7 +889,7 @@ public class SearchFragment extends BaseListFragment<SearchResult, ListExtractor
             showEmptyState();
         } else {
             int errorId = exception instanceof ParsingException ? R.string.parsing_error : R.string.general_error;
-            onUnrecoverableError(exception, UserAction.SEARCHED, NewPipe.getNameOfService(serviceId), searchQuery, errorId);
+       //     onUnrecoverableError(exception, UserAction.SEARCHED, NewPipe.getNameOfService(serviceId), searchQuery, errorId);
         }
 
         return true;

@@ -18,7 +18,7 @@ import icepick.Icepick;
 
 public abstract class BaseFragment extends Fragment {
     protected final String TAG = getClass().getSimpleName() + "@" + Integer.toHexString(hashCode());
-    protected boolean DEBUG = MainActivity.DEBUG;
+    protected boolean DEBUG = MainActivity2.DEBUG;
 
     protected AppCompatActivity activity;
     public static final ImageLoader imageLoader = ImageLoader.getInstance();

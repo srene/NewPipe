@@ -16,10 +16,10 @@ import org.acra.config.ACRAConfigurationException;
 import org.acra.config.ConfigurationBuilder;
 import org.acra.sender.ReportSenderFactory;
 import org.schabi.newpipe.extractor.NewPipe;
-import org.schabi.newpipe.report.AcraReportSenderFactory;
-import org.schabi.newpipe.report.ErrorActivity;
-import org.schabi.newpipe.report.UserAction;
-import org.schabi.newpipe.settings.SettingsActivity;
+//import org.schabi.newpipe.report.AcraReportSenderFactory;
+//import org.schabi.newpipe.report.ErrorActivity;
+//import org.schabi.newpipe.report.UserAction;
+//import org.schabi.newpipe.settings.SettingsActivity;
 import org.schabi.newpipe.util.ExtractorHelper;
 import org.schabi.newpipe.util.StateSaver;
 
@@ -54,14 +54,14 @@ import io.reactivex.plugins.RxJavaPlugins;
 public class App extends Application {
     protected static final String TAG = App.class.toString();
 
-    @SuppressWarnings("unchecked")
-    private static final Class<? extends ReportSenderFactory>[] reportSenderFactoryClasses = new Class[]{AcraReportSenderFactory.class};
+    //@SuppressWarnings("unchecked")
+    //private static final Class<? extends ReportSenderFactory>[] reportSenderFactoryClasses = new Class[]{AcraReportSenderFactory.class};
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
 
-        initACRA();
+        //initACRA();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class App extends Application {
         super.onCreate();
 
         // Initialize settings first because others inits can use its values
-        SettingsActivity.initSettings(this);
+      //  SettingsActivity.initSettings(this);
 
         NewPipe.init(Downloader.getInstance());
         NewPipeDatabase.init(this);
@@ -117,7 +117,7 @@ public class App extends Application {
     }
 
 
-    private void initACRA() {
+    /*private void initACRA() {
         try {
             final ACRAConfiguration acraConfig = new ConfigurationBuilder(this)
                     .setReportSenderFactoryClasses(reportSenderFactoryClasses)
@@ -129,7 +129,7 @@ public class App extends Application {
             ErrorActivity.reportError(this, ace, null, null, ErrorActivity.ErrorInfo.make(UserAction.SOMETHING_ELSE, "none",
                     "Could not initialize ACRA crash report", R.string.app_ui_crash));
         }
-    }
+    }*/
 
     public void initNotificationChannel() {
         if (Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {

@@ -43,7 +43,7 @@ import java.util.List;
 
 public class InfoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = InfoListAdapter.class.getSimpleName();
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     private static final int HEADER_TYPE = 0;
     private static final int FOOTER_TYPE = 1;

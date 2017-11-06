@@ -21,7 +21,7 @@ package org.schabi.newpipe.util;
 
 import android.util.Log;
 
-import org.schabi.newpipe.MainActivity;
+import org.schabi.newpipe.MainActivity2;
 import org.schabi.newpipe.extractor.Info;
 import org.schabi.newpipe.extractor.ListExtractor.NextItemsResult;
 import org.schabi.newpipe.extractor.NewPipe;
@@ -197,7 +197,7 @@ public final class ExtractorHelper {
             public MaybeSource<? extends I> call() throws Exception {
                 //noinspection unchecked
                 I info = (I) cache.getFromKey(serviceId, url);
-                if (MainActivity.DEBUG) Log.d(TAG, "loadFromCache() called, info > " + info);
+                if (MainActivity2.DEBUG) Log.d(TAG, "loadFromCache() called, info > " + info);
 
                 // Only return info if it's not null (it is cached)
                 if (info != null) {

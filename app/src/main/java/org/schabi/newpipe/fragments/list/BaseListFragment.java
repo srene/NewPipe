@@ -18,6 +18,7 @@ import org.schabi.newpipe.extractor.playlist.PlaylistInfoItem;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.fragments.BaseStateFragment;
 import org.schabi.newpipe.fragments.OnScrollBelowItemsListener;
+import org.schabi.newpipe.fragments.detail.VideoDetailFragment;
 import org.schabi.newpipe.info_list.InfoItemBuilder;
 import org.schabi.newpipe.info_list.InfoListAdapter;
 import org.schabi.newpipe.util.NavigationHelper;
@@ -135,13 +136,20 @@ public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implem
             @Override
             public void selected(StreamInfoItem selectedItem) {
                 onItemSelected(selectedItem);
-                NavigationHelper.openVideoDetailFragment(
-                        useAsFrontPage?getParentFragment().getFragmentManager():getFragmentManager(),
-                        selectedItem.service_id, selectedItem.url, selectedItem.name);
+                //NavigationHelper.openVideoDetailFragment(
+                //        useAsFrontPage?getParentFragment().getFragmentManager():getFragmentManager(),
+                //
+               VideoDetailFragment instance = VideoDetailFragment.getInstance(selectedItem.service_id, selectedItem.url, selectedItem.name);
+                instance.setAutoplay(true);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.animator.custom_fade_in, R.animator.custom_fade_out, R.animator.custom_fade_in, R.animator.custom_fade_out)
+                        .replace(R.id.main_fragment_container, instance)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
-        infoListAdapter.setOnChannelSelectedListener(new InfoItemBuilder.OnInfoItemSelectedListener<ChannelInfoItem>() {
+       /* infoListAdapter.setOnChannelSelectedListener(new InfoItemBuilder.OnInfoItemSelectedListener<ChannelInfoItem>() {
             @Override
             public void selected(ChannelInfoItem selectedItem) {
                 onItemSelected(selectedItem);
@@ -159,7 +167,7 @@ public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implem
                         useAsFrontPage?getParentFragment().getFragmentManager():getFragmentManager(),
                         selectedItem.service_id, selectedItem.url, selectedItem.name);
             }
-        });
+        });*/
 
         itemsList.clearOnScrollListeners();
         itemsList.addOnScrollListener(new OnScrollBelowItemsListener() {

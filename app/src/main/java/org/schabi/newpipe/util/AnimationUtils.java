@@ -12,11 +12,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import org.schabi.newpipe.MainActivity;
+import org.schabi.newpipe.MainActivity2;
 
 public class AnimationUtils {
     private static final String TAG = "AnimationUtils";
-    private static final boolean DEBUG = MainActivity.DEBUG;
+    private static final boolean DEBUG = MainActivity2.DEBUG;
 
     public enum Type {
         ALPHA, SCALE_AND_ALPHA, LIGHT_SCALE_AND_ALPHA, SLIDE_AND_ALPHA, LIGHT_SLIDE_AND_ALPHA

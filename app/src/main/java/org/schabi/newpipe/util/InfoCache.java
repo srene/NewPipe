@@ -23,12 +23,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
-import org.schabi.newpipe.MainActivity;
+import org.schabi.newpipe.MainActivity2;
 import org.schabi.newpipe.extractor.Info;
 
 
 public final class InfoCache {
-    private static final boolean DEBUG = MainActivity.DEBUG;
+    private static final boolean DEBUG = MainActivity2.DEBUG;
     private final String TAG = getClass().getSimpleName();
 
     private static final InfoCache instance = new InfoCache();

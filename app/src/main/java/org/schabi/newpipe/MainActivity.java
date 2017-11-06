@@ -1,330 +1,385 @@
-/*
- * Created by Christian Schabesberger on 02.08.16.
- * <p>
- * Copyright (C) Christian Schabesberger 2016 <chris.schabesberger@mailbox.org>
- * DownloadActivity.java is part of NewPipe.
- * <p>
- * NewPipe is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * NewPipe is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with NewPipe.  If not, see <http://www.gnu.org/licenses/>.
+/* -*- Mode:jde; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/**
+ * Copyright (c) 2015 Regents of the University of California
+ *
+ * This file is part of NFD (Named Data Networking Forwarding Daemon) Android.
+ * See AUTHORS.md for complete list of NFD Android authors and contributors.
+ *
+ * NFD Android is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * NFD Android is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * NFD Android, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.schabi.newpipe;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.Toast;
 
-import org.schabi.newpipe.database.AppDatabase;
-import org.schabi.newpipe.database.history.dao.HistoryDAO;
-import org.schabi.newpipe.database.history.dao.SearchHistoryDAO;
-import org.schabi.newpipe.database.history.dao.WatchHistoryDAO;
-import org.schabi.newpipe.database.history.model.HistoryEntry;
-import org.schabi.newpipe.database.history.model.SearchHistoryEntry;
-import org.schabi.newpipe.database.history.model.WatchHistoryEntry;
-import org.schabi.newpipe.extractor.StreamingService;
-import org.schabi.newpipe.extractor.stream.AudioStream;
-import org.schabi.newpipe.extractor.stream.StreamInfo;
-import org.schabi.newpipe.extractor.stream.VideoStream;
-import org.schabi.newpipe.fragments.BackPressable;
-import org.schabi.newpipe.fragments.detail.VideoDetailFragment;
-import org.schabi.newpipe.fragments.list.search.SearchFragment;
-import org.schabi.newpipe.history.HistoryListener;
-import org.schabi.newpipe.util.Constants;
-import org.schabi.newpipe.util.NavigationHelper;
-import org.schabi.newpipe.util.StateSaver;
-import org.schabi.newpipe.util.ThemeHelper;
+/*import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.intel.jndn.management.types.FaceStatus;
+import com.intel.jndn.management.types.RibEntry;*/
 
-import java.util.Date;
+import org.schabi.newpipe.fragments.list.kiosk.KioskFragment;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements HistoryListener {
+//import io.fluentic.ubicdn.utils.G;
+
+//import android.support.v7.app.ActionBarActivity;
+
+
+/**
+ * Created by srenevic on 03/08/17.
+ */
+public class MainActivity extends AppCompatActivity
+    implements DrawerFragment.DrawerCallbacks/*,
+        //       LogcatFragment.Callbacks,
+               FaceListFragment.Callbacks,
+               RouteListFragment.Callbacks,
+               VideoListFragment.Callbacks*/
+{
+
+    //////////////////////////////////////////////////////////////////////////////
+
+    //private boolean source=false;
+    /** Reference to drawer fragment */
+    private DrawerFragment m_drawerFragment;
+
+
+    /** Title that is to be displayed in the ActionBar */
+    private int m_actionBarTitleId = -1;
+
+    /** Item code for drawer items: For use in onDrawerItemSelected() callback */
+    public static final int DRAWER_ITEM_GENERAL = 1;
+    public static final int DRAWER_ITEM_NFD = 2;
+    public static final int DRAWER_ITEM_FACES = 3;
+    public static final int DRAWER_ITEM_ROUTES = 4;
+    // public static final int DRAWER_ITEM_STRATEGIES = 4;
+    public static final int DRAWER_ITEM_LOGCAT = 5;
+
+    private ProgressDialog mProgressDialog;
     private static final String TAG = "MainActivity";
-    public static final boolean DEBUG = false;
-    private SharedPreferences sharedPreferences;
+    //private FirebaseAuth mAuth;
 
-    /*//////////////////////////////////////////////////////////////////////////
-    // Activity's LifeCycle
-    //////////////////////////////////////////////////////////////////////////*/
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        if (DEBUG) Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
-        ThemeHelper.setTheme(this);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+  //  FirebaseMessaging.getInstance().subscribeToTopic("news");
+    Log.d("Main", "subscribed to topic news");
+    FragmentManager fragmentManager = getSupportFragmentManager();
+  //  mAuth = FirebaseAuth.getInstance();
 
-        if (getSupportFragmentManager() != null && getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            initFragments();
-        }
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        initHistory();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (!isChangingConfigurations()) {
-            StateSaver.clearStateFiles();
-        }
-
-        disposeHistory();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getBoolean(Constants.KEY_THEME_CHANGE, false)) {
-            if (DEBUG) Log.d(TAG, "Theme has changed, recreating activity...");
-            sharedPreferences.edit().putBoolean(Constants.KEY_THEME_CHANGE, false).apply();
-            // https://stackoverflow.com/questions/10844112/runtimeexception-performing-pause-of-activity-that-is-not-resumed
-            // Briefly, let the activity resume properly posting the recreate call to end of the message queue
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+          //  builder.setTitle("This app needs location access");
+          //  builder.setMessage("Please grant location access");
+          //  builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
-                public void run() {
-                    MainActivity.this.recreate();
+                public void onDismiss(DialogInterface dialog) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
                 }
             });
-        }
-
-        if(sharedPreferences.getBoolean(Constants.KEY_MAIN_PAGE_CHANGE, false)) {
-            if (DEBUG) Log.d(TAG, "main page has changed, recreating main fragment...");
-            sharedPreferences.edit().putBoolean(Constants.KEY_MAIN_PAGE_CHANGE, false).apply();
-            NavigationHelper.openMainActivity(this);
-        }
-
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        if (DEBUG) Log.d(TAG, "onNewIntent() called with: intent = [" + intent + "]");
-        if (intent != null) {
-            // Return if launched from a launcher (e.g. Nova Launcher, Pixel Launcher ...)
-            // to not destroy the already created backstack
-            String action = intent.getAction();
-            if ((action != null && action.equals(Intent.ACTION_MAIN)) && intent.hasCategory(Intent.CATEGORY_LAUNCHER)) return;
-        }
-
-        super.onNewIntent(intent);
-        setIntent(intent);
-        handleIntent(intent);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (DEBUG) Log.d(TAG, "onBackPressed() called");
-
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_holder);
-        // If current fragment implements BackPressable (i.e. can/wanna handle back press) delegate the back press to it
-        if (fragment instanceof BackPressable) {
-            if (((BackPressable) fragment).onBackPressed()) return;
-        }
-
-
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            finish();
-        } else super.onBackPressed();
-    }
-
-    /*//////////////////////////////////////////////////////////////////////////
-    // Menu
-    //////////////////////////////////////////////////////////////////////////*/
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (DEBUG) Log.d(TAG, "onCreateOptionsMenu() called with: menu = [" + menu + "]");
-        super.onCreateOptionsMenu(menu);
-
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_holder);
-        if (!(fragment instanceof VideoDetailFragment)) {
-            findViewById(R.id.toolbar).findViewById(R.id.toolbar_spinner).setVisibility(View.GONE);
-        }
-
-        if (!(fragment instanceof SearchFragment)) {
-            findViewById(R.id.toolbar).findViewById(R.id.toolbar_search_container).setVisibility(View.GONE);
-
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.main_menu, menu);
-        }
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(false);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (DEBUG) Log.d(TAG, "onOptionsItemSelected() called with: item = [" + item + "]");
-        int id = item.getItemId();
-
-        switch (id) {
-            case android.R.id.home:
-                NavigationHelper.gotoMainFragment(getSupportFragmentManager());
-                return true;
-            case R.id.action_settings:
-                NavigationHelper.openSettings(this);
-                return true;
-            case R.id.action_show_downloads:
-                return NavigationHelper.openDownloads(this);
-            case R.id.action_about:
-                NavigationHelper.openAbout(this);
-                return true;
-            case R.id.action_history:
-                NavigationHelper.openHistory(this);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            builder.show();
         }
     }
 
-    /*//////////////////////////////////////////////////////////////////////////
-    // Init
-    //////////////////////////////////////////////////////////////////////////*/
-
-    private void initFragments() {
-        if (DEBUG) Log.d(TAG, "initFragments() called");
-        StateSaver.clearStateFiles();
-        if (getIntent() != null && getIntent().hasExtra(Constants.KEY_LINK_TYPE)) {
-            handleIntent(getIntent());
-        } else NavigationHelper.gotoMainFragment(getSupportFragmentManager());
+    if (savedInstanceState != null) {
+      m_drawerFragment = (DrawerFragment)fragmentManager.findFragmentByTag(DrawerFragment.class.toString());
     }
 
-    /*//////////////////////////////////////////////////////////////////////////
-    // Utils
-    //////////////////////////////////////////////////////////////////////////*/
+    if (m_drawerFragment == null) {
+      ArrayList<DrawerFragment.DrawerItem> items = new ArrayList<DrawerFragment.DrawerItem>();
+      items.add(new DrawerFragment.DrawerItem(R.string.drawer_item_general, 0,
+                                             DRAWER_ITEM_GENERAL));
+      items.add(new DrawerFragment.DrawerItem(R.string.drawer_item_service, 0,
+                                              DRAWER_ITEM_NFD));
+      items.add(new DrawerFragment.DrawerItem(R.string.drawer_item_faces, 0,
+                                              DRAWER_ITEM_FACES));
+      items.add(new DrawerFragment.DrawerItem(R.string.drawer_item_routes, 0,
+                                              DRAWER_ITEM_ROUTES));
+      //    items.add(new DrawerFragment.DrawerItem(R.string.drawer_item_strategies, 0,
+      //                                            DRAWER_ITEM_STRATEGIES));
+      items.add(new DrawerFragment.DrawerItem(R.string.drawer_item_logcat, 0,
+                                              DRAWER_ITEM_LOGCAT));
 
-    private void handleIntent(Intent intent) {
-        if (DEBUG) Log.d(TAG, "handleIntent() called with: intent = [" + intent + "]");
 
-        if (intent.hasExtra(Constants.KEY_LINK_TYPE)) {
-            String url = intent.getStringExtra(Constants.KEY_URL);
-            int serviceId = intent.getIntExtra(Constants.KEY_SERVICE_ID, 0);
-            String title = intent.getStringExtra(Constants.KEY_TITLE);
-            switch (((StreamingService.LinkType) intent.getSerializableExtra(Constants.KEY_LINK_TYPE))) {
-                case STREAM:
-                    boolean autoPlay = intent.getBooleanExtra(VideoDetailFragment.AUTO_PLAY, false);
-                    NavigationHelper.openVideoDetailFragment(getSupportFragmentManager(), serviceId, url, title, autoPlay);
-                    break;
-                case CHANNEL:
-                    NavigationHelper.openChannelFragment(getSupportFragmentManager(), serviceId, url, title);
-                    break;
-                case PLAYLIST:
-                    NavigationHelper.openPlaylistFragment(getSupportFragmentManager(), serviceId, url, title);
-                    break;
+      m_drawerFragment = DrawerFragment.newInstance(items);
+
+      fragmentManager
+        .beginTransaction()
+        .replace(R.id.navigation_drawer, m_drawerFragment, DrawerFragment.class.toString())
+        .commit();
+
+       /* List<PackageInfo> cachePackageInfo = null;
+        PackageManager pm =  this.getPackageManager();
+        cachePackageInfo = pm.getInstalledPackages(0);
+
+        for(PackageInfo inf : cachePackageInfo)
+        {
+            G.Log("Package info " + inf.packageName);
+            G.Log("Package info " + inf.versionName);
+            G.Log("Package info " + inf.applicationInfo.loadLabel(pm).toString());
+            //this.name = getLabel(info, context);
+            //this.description = getDescription(info, context);
+            //this.system = isSystem(info.packageName, context);
+            //this.internet = hasInternet(info.packageName, context);
+            //this.enabled = isEnabled(info, context);
+            //this.launch = getIntentLaunch(info.packageName, context);
+            //this.settings = getIntentSettings(info.packageName, context);
+            //this.datasaver = getIntentDatasaver(info.packageName, context);
+          //  G.Log("Package info " + pre_system.get(inf.packageName));
+
+        }*/
+    }
+
+  }
+
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    //signInAnonymously();
+
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    Log.d(TAG,"onCreateOptionsMenu" + String.valueOf(m_drawerFragment.shouldHideOptionsMenu()));
+    if (!m_drawerFragment.shouldHideOptionsMenu()) {
+      updateActionBar();
+      return super.onCreateOptionsMenu(menu);
+    }
+    else
+      return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    return super.onOptionsItemSelected(item);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Convenience method that updates and display the current title in the Action Bar
+   */
+  @SuppressWarnings("deprecation")
+  private void updateActionBar() {
+    ActionBar actionBar = getSupportActionBar();
+    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+    actionBar.setDisplayShowTitleEnabled(true);
+    if (m_actionBarTitleId != -1) {
+      actionBar.setTitle(m_actionBarTitleId);
+    }
+  }
+
+  /**
+   * Convenience method that replaces the main fragment container with the
+   * new fragment and adding the current transaction to the backstack.
+   *
+   * @param fragment Fragment to be displayed in the main fragment container.
+   */
+  private void replaceContentFragmentWithBackstack(Fragment fragment) {
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    fragmentManager.beginTransaction()
+        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        .replace(R.id.main_fragment_container, fragment)
+        .addToBackStack(null)
+        .commit();
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+
+  @Override
+  public void
+  onDrawerItemSelected(int itemCode, int itemNameId) {
+
+    String fragmentTag = "io.fluentic.ubicdn.content-" + String.valueOf(itemCode);
+    FragmentManager fragmentManager = getSupportFragmentManager();
+
+    // Create fragment according to user's selection
+    Fragment fragment = fragmentManager.findFragmentByTag(fragmentTag);
+    if (fragment == null) {
+      switch (itemCode) {
+        case DRAWER_ITEM_GENERAL:
+        //  fragment = VideoListFragment.newInstance();
+       try {
+            fragment = KioskFragment.getInstance(0,"Trending");
+      } catch (Exception e) {}
+          break;
+        case DRAWER_ITEM_NFD:
+        //  fragment = ServiceFragment.newInstance();
+          break;
+        case DRAWER_ITEM_FACES:
+       //   fragment = FaceListFragment.newInstance();
+          break;
+        case DRAWER_ITEM_ROUTES:
+      //    fragment = RouteListFragment.newInstance();
+          break;
+        // TODO: Placeholders; Fill these in when their fragments have been created
+        //    case DRAWER_ITEM_STRATEGIES:
+        //      break;
+       /* case DRAWER_ITEM_LOGCAT:
+          fragment = LogcatFragment.newInstance();
+          break;*/
+        default:
+          // Invalid; Nothing else needs to be done
+          return;
+      }
+    }
+
+    // Update ActionBar title
+    m_actionBarTitleId = itemNameId;
+
+    fragmentManager.beginTransaction()
+      .replace(R.id.main_fragment_container, fragment, fragmentTag)
+      .commit();
+  }
+
+    private void showProgressDialog(String caption) {
+
+        mProgressDialog = new ProgressDialog(this);
+
+        final String msg = caption;
+
+        new Thread()
+        {
+            public void run()
+            {
+                MainActivity.this.runOnUiThread(new Runnable()
+                {
+                    public void run()
+                    {
+                        if (mProgressDialog == null) {
+                            mProgressDialog.setIndeterminate(true);
+                        }
+
+                        mProgressDialog.setMessage(msg);
+                        mProgressDialog.show();
+                    }
+                });
             }
-        } else if (intent.hasExtra(Constants.KEY_OPEN_SEARCH)) {
-            String searchQuery = intent.getStringExtra(Constants.KEY_QUERY);
-            if (searchQuery == null) searchQuery = "";
-            int serviceId = intent.getIntExtra(Constants.KEY_SERVICE_ID, 0);
-            NavigationHelper.openSearchFragment(getSupportFragmentManager(), serviceId, searchQuery);
-        } else {
-            NavigationHelper.gotoMainFragment(getSupportFragmentManager());
+        }.start();
+
+
+    }
+  /*@Override
+  public void onDisplayLogcatSettings() {
+    replaceContentFragmentWithBackstack(LogcatSettingsFragment.newInstance());
+  }
+
+  @Override
+  public void onFaceItemSelected(FaceStatus faceStatus) {
+    replaceContentFragmentWithBackstack(FaceStatusFragment.newInstance(faceStatus));
+  }
+
+  @Override
+  public void onRouteItemSelected(RibEntry ribEntry)
+  {
+    replaceContentFragmentWithBackstack(RouteInfoFragment.newInstance(ribEntry));
+  }
+
+  @Override
+  public void onVideoItemSelected(String videoEntry)
+  {
+
+    replaceContentFragmentWithBackstack(VideoFragment.newInstance(videoEntry));
+  }
+
+
+    private void signInAnonymously() {
+    // Sign in anonymously. Authentication is required to read or write from Firebase Storage.
+    showProgressDialog(getString(R.string.progress_auth));
+    mAuth.signInAnonymously()
+            .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+              @Override
+              public void onSuccess(AuthResult authResult) {
+                Log.d(TAG, "signInAnonymously:SUCCESS");
+                hideProgressDialog();
+                updateUI(authResult.getUser());
+              }
+            })
+            .addOnFailureListener(this, new OnFailureListener() {
+              @Override
+              public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "signInAnonymously:FAILURE", exception);
+                hideProgressDialog();
+                updateUI(null);
+              }
+            });
+  }
+
+
+
+    private void updateUI(FirebaseUser user) {
+        // Signed in or Signed out
+        if(user==null) {
+            String msg = "User auth error";
+            Log.d(TAG, msg);
+            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
-    /*//////////////////////////////////////////////////////////////////////////
-    // History
-    //////////////////////////////////////////////////////////////////////////*/
-
-    private WatchHistoryDAO watchHistoryDAO;
-    private SearchHistoryDAO searchHistoryDAO;
-    private PublishSubject<HistoryEntry> historyEntrySubject;
-    private Disposable disposable;
-
-    private void initHistory() {
-        final AppDatabase database = NewPipeDatabase.getInstance();
-        watchHistoryDAO = database.watchHistoryDAO();
-        searchHistoryDAO = database.searchHistoryDAO();
-        historyEntrySubject = PublishSubject.create();
-        disposable = historyEntrySubject
-                .observeOn(Schedulers.io())
-                .subscribe(getHistoryEntryConsumer());
-    }
-
-    private void disposeHistory() {
-        if (disposable != null) disposable.dispose();
-        watchHistoryDAO = null;
-        searchHistoryDAO = null;
-    }
-
-    @NonNull
-    private Consumer<HistoryEntry> getHistoryEntryConsumer() {
-        return new Consumer<HistoryEntry>() {
-            @Override
-            public void accept(HistoryEntry historyEntry) throws Exception {
-                //noinspection unchecked
-                HistoryDAO<HistoryEntry> historyDAO = (HistoryDAO<HistoryEntry>)
-                        (historyEntry instanceof SearchHistoryEntry ? searchHistoryDAO : watchHistoryDAO);
-
-                HistoryEntry latestEntry = historyDAO.getLatestEntry();
-                if (historyEntry.hasEqualValues(latestEntry)) {
-                    latestEntry.setCreationDate(historyEntry.getCreationDate());
-                    historyDAO.update(latestEntry);
-                } else {
-                    historyDAO.insert(historyEntry);
-                }
+    private void hideProgressDialog() {
+        new Thread()
+        {
+            public void run()
+            {
+                MainActivity.this.runOnUiThread(new Runnable()
+                {
+                    public void run()
+                    {
+                        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                            mProgressDialog.dismiss();
+                        }
+                    }
+                });
             }
-        };
+        }.start();
+
     }
 
-    private void addWatchHistoryEntry(StreamInfo streamInfo) {
-        if (sharedPreferences.getBoolean(getString(R.string.enable_watch_history_key), true)) {
-            WatchHistoryEntry entry = new WatchHistoryEntry(streamInfo);
-            historyEntrySubject.onNext(entry);
-        }
+    /*public void setSource(boolean source){
+        this.source = source;
+
     }
 
-    @Override
-    public void onVideoPlayed(StreamInfo streamInfo, @Nullable VideoStream videoStream) {
-        addWatchHistoryEntry(streamInfo);
-    }
+    public boolean getSource(){
+        return source;
+    }*/
 
-    @Override
-    public void onAudioPlayed(StreamInfo streamInfo, AudioStream audioStream) {
-        addWatchHistoryEntry(streamInfo);
-    }
 
-    @Override
-    public void onSearch(int serviceId, String query) {
-        // Add search history entry
-        if (sharedPreferences.getBoolean(getString(R.string.enable_search_history_key), true)) {
-            SearchHistoryEntry searchHistoryEntry = new SearchHistoryEntry(new Date(), serviceId, query);
-            historyEntrySubject.onNext(searchHistoryEntry);
-        }
-    }
+
 }

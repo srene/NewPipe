@@ -12,8 +12,7 @@
         android:id="@+id/detail_main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
-        app:parallax_factor="1.9">
+        android:visibility="visible">
 
         <!--WRAPPER-->
         <LinearLayout
