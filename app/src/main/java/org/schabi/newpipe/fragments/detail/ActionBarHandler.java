@@ -71,7 +71,7 @@ class ActionBarHandler {
         selectedVideoStream = ListHelper.getDefaultResolutionIndex(activity, videoStreams);
 
         boolean isExternalPlayerEnabled = PreferenceManager.getDefaultSharedPreferences(activity).getBoolean(activity.getString(R.string.use_external_video_player_key), false);
-        //toolbarSpinner.setAdapter(new SpinnerToolbarAdapter(activity, videoStreams, isExternalPlayerEnabled));
+        /*toolbarSpinner.setAdapter(new SpinnerToolbarAdapter(activity, videoStreams, isExternalPlayerEnabled));
         toolbarSpinner.setSelection(selectedVideoStream);
         toolbarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -82,7 +82,7 @@ class ActionBarHandler {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
-        });
+        });*/
 
     }
 

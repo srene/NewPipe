@@ -32,6 +32,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -99,6 +100,8 @@ public class MainActivity extends AppCompatActivity
     FragmentManager fragmentManager = getSupportFragmentManager();
   //  mAuth = FirebaseAuth.getInstance();
 
+       Toolbar toolbar = findViewById(R.id.toolbar);
+       setSupportActionBar(toolbar);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -226,7 +229,7 @@ public class MainActivity extends AppCompatActivity
   public void
   onDrawerItemSelected(int itemCode, int itemNameId) {
 
-    String fragmentTag = "io.fluentic.ubicdn.content-" + String.valueOf(itemCode);
+    String fragmentTag = "org.schabi.newpipe.content-" + String.valueOf(itemCode);
     FragmentManager fragmentManager = getSupportFragmentManager();
 
     // Create fragment according to user's selection

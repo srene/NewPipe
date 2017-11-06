@@ -17,7 +17,7 @@ import org.schabi.newpipe.extractor.channel.ChannelInfoItem;
 import org.schabi.newpipe.extractor.playlist.PlaylistInfoItem;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.fragments.BaseStateFragment;
-import org.schabi.newpipe.fragments.OnScrollBelowItemsListener;
+//import org.schabi.newpipe.fragments.OnScrollBelowItemsListener;
 import org.schabi.newpipe.fragments.detail.VideoDetailFragment;
 import org.schabi.newpipe.info_list.InfoItemBuilder;
 import org.schabi.newpipe.info_list.InfoListAdapter;
@@ -29,7 +29,7 @@ import java.util.Queue;
 
 import static org.schabi.newpipe.util.AnimationUtils.animateView;
 
-public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implements ListViewContract<I, N>, StateSaver.WriteRead {
+public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implements ListViewContract<I, N>{//, StateSaver.WriteRead {
 
     /*//////////////////////////////////////////////////////////////////////////
     // Views
@@ -57,14 +57,14 @@ public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implem
     @Override
     public void onDestroy() {
         super.onDestroy();
-        StateSaver.onDestroy(savedState);
+        //StateSaver.onDestroy(savedState);
     }
 
     /*//////////////////////////////////////////////////////////////////////////
     // State Saving
     //////////////////////////////////////////////////////////////////////////*/
 
-    protected StateSaver.SavedState savedState;
+    /*protected StateSaver.SavedState savedState;
 
     @Override
     public String generateSuffix() {
@@ -94,7 +94,7 @@ public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implem
     protected void onRestoreInstanceState(@NonNull Bundle bundle) {
         super.onRestoreInstanceState(bundle);
         savedState = StateSaver.tryToRestore(bundle, this);
-    }
+    }*/
 
     /*//////////////////////////////////////////////////////////////////////////
     // Init
@@ -140,7 +140,7 @@ public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implem
                 //        useAsFrontPage?getParentFragment().getFragmentManager():getFragmentManager(),
                 //
                VideoDetailFragment instance = VideoDetailFragment.getInstance(selectedItem.service_id, selectedItem.url, selectedItem.name);
-                instance.setAutoplay(true);
+                instance.setAutoplay(false);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.animator.custom_fade_in, R.animator.custom_fade_out, R.animator.custom_fade_in, R.animator.custom_fade_out)
                         .replace(R.id.main_fragment_container, instance)
@@ -170,12 +170,12 @@ public abstract class BaseListFragment<I, N> extends BaseStateFragment<I> implem
         });*/
 
         itemsList.clearOnScrollListeners();
-        itemsList.addOnScrollListener(new OnScrollBelowItemsListener() {
+       /* itemsList.addOnScrollListener(new OnScrollBelowItemsListener() {
             @Override
             public void onScrolledDown(RecyclerView recyclerView) {
                 onScrollToBottom();
             }
-        });
+        });*/
     }
 
     protected void onScrollToBottom() {

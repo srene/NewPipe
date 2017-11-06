@@ -36,7 +36,7 @@ import android.view.View;
 
 import org.schabi.newpipe.fragments.MainFragment;
 import org.schabi.newpipe.fragments.list.kiosk.KioskFragment;
-import org.schabi.newpipe.fragments.list.search.SearchFragment;
+//import org.schabi.newpipe.fragments.list.search.SearchFragment;
 //import org.schabi.newpipe.history.HistoryListener;
 import org.schabi.newpipe.util.Constants;
 import org.schabi.newpipe.util.NavigationHelper;
@@ -60,10 +60,12 @@ public class MainActivity2 extends AppCompatActivity /*implements HistoryListene
         setContentView(R.layout.activity_main);
 
         if (getSupportFragmentManager() != null && getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            initFragments();
+
+               initFragments();
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        Log.d(TAG, "Toolbar "+toolbar);
         setSupportActionBar(toolbar);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -151,12 +153,12 @@ public class MainActivity2 extends AppCompatActivity /*implements HistoryListene
             findViewById(R.id.toolbar).findViewById(R.id.toolbar_spinner).setVisibility(View.GONE);
         }*/
 
-        if (!(fragment instanceof SearchFragment)) {
-            findViewById(R.id.toolbar).findViewById(R.id.toolbar_search_container).setVisibility(View.GONE);
+       // if (!(fragment instanceof SearchFragment)) {
+       //     findViewById(R.id.toolbar).findViewById(R.id.toolbar_search_container).setVisibility(View.GONE);
 
          //   MenuInflater inflater = getMenuInflater();
          //   inflater.inflate(R.menu.main_menu, menu);
-        }
+       // }
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

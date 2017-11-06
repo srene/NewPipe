@@ -72,7 +72,7 @@ public class App extends Application {
       //  SettingsActivity.initSettings(this);
 
         NewPipe.init(Downloader.getInstance());
-        NewPipeDatabase.init(this);
+        //NewPipeDatabase.init(this);
         StateSaver.init(this);
         initNotificationChannel();
 

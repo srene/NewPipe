@@ -67,7 +67,7 @@ public abstract class BaseListInfoFragment<I extends ListInfo> extends BaseListF
 
     /*//////////////////////////////////////////////////////////////////////////
     // State Saving
-    //////////////////////////////////////////////////////////////////////////*/
+    //////////////////////////////////////////////////////////////////////////
 
     @Override
     public void writeTo(Queue<Object> objectsToSave) {
@@ -82,7 +82,7 @@ public abstract class BaseListInfoFragment<I extends ListInfo> extends BaseListF
         super.readFrom(savedObjects);
         currentInfo = (I) savedObjects.poll();
         currentNextItemsUrl = (String) savedObjects.poll();
-    }
+    }*/
 
     /*//////////////////////////////////////////////////////////////////////////
     // Utils
@@ -189,13 +189,14 @@ public abstract class BaseListInfoFragment<I extends ListInfo> extends BaseListF
     @Override
     public void handleResult(@NonNull I result) {
         super.handleResult(result);
-
+        Log.d(TAG,"Load new result "+result.name);
         url = result.url;
         name = result.name;
         setTitle(name);
 
         if (infoListAdapter.getItemsList().size() == 0) {
             if (result.related_streams.size() > 0) {
+                Log.d(TAG,"Related streams "+result.related_streams.size());
                 infoListAdapter.addInfoItemList(result.related_streams);
                 showListFooter(hasMoreItems());
             } else {

@@ -43,8 +43,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -105,8 +107,13 @@ public class DrawerFragment extends Fragment {
                            ViewGroup container,
                            Bundle savedInstanceState)
   {
-    m_drawerListView = (ListView)inflater.inflate(
-      R.layout.activity_main_drawer_listview, container, false);
+
+    View drawer = inflater.inflate(
+            R.layout.activity_main_drawer_listview, container, false);
+    m_drawerListView = drawer.findViewById(R.id.drawer_listview);
+
+   // m_drawerListView = (ListView)inflater.inflate(
+    //  R.layout.activity_main_drawer_listview, container, false);
 
     m_drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
@@ -118,7 +125,25 @@ public class DrawerFragment extends Fragment {
     m_drawerListView.setAdapter(new DrawerListAdapter(getContext(),m_drawerItems));
     m_drawerListView.setItemChecked(m_drawerSelectedPosition, true);
 
-    return m_drawerListView;
+    m_serviceStartStopSwitch = drawer.findViewById(R.id.serviceSwitch);
+
+    m_serviceStartStopSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton compoundButton, boolean isOn)
+          {
+
+              if (isOn) {
+                 // isSource.setEnabled(false);
+                  startUbiCDNService();
+              }
+              else {
+                //  isSource.setEnabled(true);
+                  stopUbiCDNService();
+              }
+          }
+      });
+
+    return drawer;
   }
 
   @Override
@@ -155,7 +180,7 @@ public class DrawerFragment extends Fragment {
     actionBar.setDisplayHomeAsUpEnabled(true);
     actionBar.setHomeButtonEnabled(true);
 */
-    m_drawerToggle = new ActionBarDrawerToggle(getActivity(), m_drawerLayout,
+    /*m_drawerToggle = new ActionBarDrawerToggle(getActivity(), m_drawerLayout,
         1,
         2)
     {
@@ -220,7 +245,7 @@ public class DrawerFragment extends Fragment {
       }
     });
 
-    m_drawerLayout.setDrawerListener(m_drawerToggle);
+    m_drawerLayout.setDrawerListener(m_drawerToggle);*/
   }
 
   @Override
@@ -233,7 +258,7 @@ public class DrawerFragment extends Fragment {
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     // Forward the new configuration the drawer toggle component.
-    m_drawerToggle.onConfigurationChanged(newConfig);
+    //m_drawerToggle.onConfigurationChanged(newConfig);
   }
 
   @Override
@@ -263,9 +288,9 @@ public class DrawerFragment extends Fragment {
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle drawer selection events
-    if (m_drawerToggle.onOptionsItemSelected(item)) {
+   /* if (m_drawerToggle.onOptionsItemSelected(item)) {
       return true;
-    }
+    }*/
 
     // Handle other menu items
     switch (item.getItemId()) {
@@ -465,6 +490,70 @@ public class DrawerFragment extends Fragment {
 
   //////////////////////////////////////////////////////////////////////////////
 
+
+    public void
+    startUbiCDNService() {
+       /* assert m_isServiceConnected;
+
+        m_serviceStartStopSwitch.setText(R.string.starting_service);
+        //sendServiceMessage(UbiCDNService.START_UBICDN_SERVICE_SOURCE);
+        sendServiceMessage(UbiCDNService.START_UBICDN_SERVICE);
+        // Intent myService = new Intent(this, UbiCDNServiceFG.class);
+        // startService(myService);*/
+      /*Intent notificationIntent = new Intent(this, UbiCDNServiceFG.class);
+      PendingIntent pendingIntent =
+              PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+      Notification notification =
+              new Notification.Builder(this, CHANNEL_DEFAULT_IMPORTANCE)
+                      .setContentTitle(getText(R.string.notification_title))
+                      .setContentText(getText(R.string.notification_message))
+                      .setSmallIcon(R.drawable.icon)
+                      .setContentIntent(pendingIntent)
+                      .setTicker(getText(R.string.ticker_text))
+                      .build();
+
+      getContext().startForegroundService(ONGOING_NOTIFICATION_ID, notification)*/
+
+     /* try {
+          final Intent prepare = VpnService.prepare(getContext());
+          if (prepare == null) {
+              G.Log("Prepare done");
+              onActivityResult(REQUEST_VPN, RESULT_OK, null);
+          } else {
+
+              G.Log("Start intent=" + prepare);
+              try {
+                  // com.android.vpndialogs.ConfirmDialog required
+                  startActivityForResult(prepare, REQUEST_VPN);
+              } catch (Throwable ex) {
+                  G.Log(ex.toString() + "\n" + Log.getStackTraceString(ex));
+                  onActivityResult(REQUEST_VPN, RESULT_CANCELED, null);
+        //          prefs.edit().putBoolean("enabled", false).apply();
+              }
+
+          }
+      } catch (Throwable ex) {
+          // Prepare failed
+          G.Log(ex.toString() + "\n" + Log.getStackTraceString(ex));
+       //   prefs.edit().putBoolean("enabled", false).apply();
+      }*/
+    }
+
+    public void
+    stopUbiCDNService() {
+       /* assert m_isServiceConnected;
+
+        m_serviceStartStopSwitch.setText(R.string.stopping_service);
+        sendServiceMessage(UbiCDNService.STOP_UBICDN_SERVICE);
+
+        // disable status block
+        m_statusView.setVisibility(View.GONE);
+        m_wifi_status_view.setVisibility(View.GONE);
+        m_btStatusView.setVisibility(View.GONE);
+        m_handler.removeCallbacks(m_statusUpdateRunnable);*/
+    }
+
   /** SharedPreference: Display drawer when drawer loads for the very first time */
   private static final String PREF_DRAWER_SHOWN_TO_USER_FOR_THE_FIRST_TIME
       = "DRAWER_PRESENTED_TO_USER_ON_FIRST_LOAD";
@@ -480,7 +569,7 @@ public class DrawerFragment extends Fragment {
   private DrawerCallbacks m_callbacks;
 
   /** DrawerToggle for interacting with drawer and action bar app icon */
-  private ActionBarDrawerToggle m_drawerToggle;
+  //private ActionBarDrawerToggle m_drawerToggle;
 
   /** Reference to DrawerLayout fragment in host activity */
   private DrawerLayout m_drawerLayout;
@@ -505,4 +594,7 @@ public class DrawerFragment extends Fragment {
 
   /** Flag that marks if drawer is sliding outwards and being displayed */
   private boolean m_shouldHideOptionsMenu = false;
+
+  private Switch m_serviceStartStopSwitch;
+
 }

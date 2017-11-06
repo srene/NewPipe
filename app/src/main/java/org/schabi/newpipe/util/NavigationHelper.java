@@ -23,10 +23,10 @@ import org.schabi.newpipe.fragments.detail.BasePlayer;
 import org.schabi.newpipe.fragments.detail.VideoDetailFragment;
 //import org.schabi.newpipe.fragments.list.channel.ChannelFragment;
 //import org.schabi.newpipe.fragments.list.feed.FeedFragment;
-import org.schabi.newpipe.fragments.detail.VideoPlayer;
+//import org.schabi.newpipe.fragments.detail.VideoPlayer;
 import org.schabi.newpipe.fragments.list.kiosk.KioskFragment;
 //import org.schabi.newpipe.fragments.list.playlist.PlaylistFragment;
-import org.schabi.newpipe.fragments.list.search.SearchFragment;
+//import org.schabi.newpipe.fragments.list.search.SearchFragment;
 //import org.schabi.newpipe.history.HistoryActivity;
 //import org.schabi.newpipe.player.BasePlayer;
 //import org.schabi.newpipe.player.VideoPlayer;
@@ -44,9 +44,9 @@ public class NavigationHelper {
                                          final Class targetClazz,
                                          final PlayQueue playQueue,
                                          final String quality) {
-        Intent intent = new Intent(context, targetClazz)
-                .putExtra(VideoPlayer.PLAY_QUEUE, playQueue);
-        if (quality != null) intent.putExtra(VideoPlayer.PLAYBACK_QUALITY, quality);
+        Intent intent = new Intent(context, targetClazz);
+          //      .putExtra(VideoPlayer.PLAY_QUEUE, playQueue);
+       // if (quality != null) intent.putExtra(VideoPlayer.PLAYBACK_QUALITY, quality);
 
         return intent;
     }
@@ -99,13 +99,13 @@ public class NavigationHelper {
                 .commit();
     }
 
-    public static void openSearchFragment(FragmentManager fragmentManager, int serviceId, String query) {
+    /*public static void openSearchFragment(FragmentManager fragmentManager, int serviceId, String query) {
         fragmentManager.beginTransaction()
                 .setCustomAnimations(R.animator.custom_fade_in, R.animator.custom_fade_out, R.animator.custom_fade_in, R.animator.custom_fade_out)
                 .replace(R.id.fragment_holder, SearchFragment.getInstance(serviceId, query))
                 .addToBackStack(null)
                 .commit();
-    }
+    }*/
 
     public static void openVideoDetailFragment(FragmentManager fragmentManager, int serviceId, String url, String title) {
         openVideoDetailFragment(fragmentManager, serviceId, url, title, false);

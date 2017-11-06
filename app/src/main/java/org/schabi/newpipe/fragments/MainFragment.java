@@ -150,7 +150,7 @@ public class MainFragment extends BaseFragment  implements TabLayout.OnTabSelect
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                NavigationHelper.openSearchFragment(getFragmentManager(), 0, "");
+             //   NavigationHelper.openSearchFragment(getFragmentManager(), 0, "");
                 return true;
         }
         return super.onOptionsItemSelected(item);

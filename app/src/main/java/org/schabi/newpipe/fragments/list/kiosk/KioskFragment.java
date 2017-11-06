@@ -92,7 +92,7 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
         super.setUserVisibleHint(isVisibleToUser);
         if(useAsFrontPage && isVisibleToUser) {
             try {
-             //   activity.getSupportActionBar().setTitle(KioskTranslator.getTranslatedKioskName(kioskId, getActivity()));
+                activity.getSupportActionBar().setTitle(KioskTranslator.getTranslatedKioskName(kioskId, getActivity()));
             } catch (Exception e) {
                 onError(e);
             }
@@ -150,8 +150,8 @@ public class KioskFragment extends BaseListInfoFragment<KioskInfo> {
         super.handleResult(result);
 
         String title = KioskTranslator.getTranslatedKioskName(result.id, getActivity());
-    //    ActionBar supportActionBar = activity.getSupportActionBar();
-    //    supportActionBar.setTitle(title);
+        ActionBar supportActionBar = activity.getSupportActionBar();
+        supportActionBar.setTitle(title);
 
         if (!result.errors.isEmpty()) {
       //      showSnackBarError(result.errors,

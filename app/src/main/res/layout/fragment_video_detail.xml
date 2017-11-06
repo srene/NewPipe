@@ -372,7 +372,7 @@
 
                     </LinearLayout>
 
-                    <!--NEXT AND RELATED VIDEOS-->
+                    <!--NEXT AND RELATED VIDEOS
                     <LinearLayout
                         android:id="@+id/detail_related_streams_root_layout"
                         android:layout_width="match_parent"
@@ -411,7 +411,7 @@
                             android:textAlignment="center"
                             android:textAllCaps="true"
                             tools:ignore="ContentDescription"/>
-                    </LinearLayout>
+                    </LinearLayout>-->
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

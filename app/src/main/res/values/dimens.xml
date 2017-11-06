@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Video Item Search View Dimensions-->
-    <dimen name="drawer_width">192dp</dimen>
+    <dimen name="drawer_width">256dp</dimen>
     <dimen name="default_padding_left">16dp</dimen>
     <dimen name="default_padding_right">16dp</dimen>
     <!-- Text Size -->
