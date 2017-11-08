@@ -5,7 +5,7 @@ android {
     buildToolsVersion '26.0.2'
 
     defaultConfig {
-        applicationId "org.schabi.newpipe"
+        applicationId "io.fluentic.ubicdn"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 41
@@ -28,13 +28,9 @@ android {
         }
         debug {
             multiDexEnabled true
-
             debuggable true
-            applicationIdSuffix ".debug"
         }
-        beta {
-            applicationIdSuffix ".beta"
-        }
+
     }
 
     lintOptions {
@@ -53,8 +49,18 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2') {
         exclude module: 'support-annotations'
     }
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile('com.intel.jndn.management:jndn-management:1.1.0') {
+        exclude group: 'net.named-data', module: 'jndn'
+    }
+    compile files('libs/jndn-0.15.jar')
+    compile files('libs/netty-buffer-4.1.0.Beta5.jar')
+    compile files('libs/netty-common-4.1.0.Beta5.jar')
+    compile 'net.named-data.jndn-xx:jndn-xx-util:0.0.1'
 
-   // compile 'com.github.TeamNewPipe:NewPipeExtractor:b9d0941'
+    compile 'com.google.protobuf:protobuf-java:2.6.1'
+
+    // compile 'com.github.TeamNewPipe:NewPipeExtractor:b9d0941'
     implementation 'com.grack:nanojson:1.1'
     implementation 'org.jsoup:jsoup:1.9.2'
     implementation 'org.mozilla:rhino:1.7.7.1'
@@ -70,6 +76,16 @@ dependencies {
 
     compile 'com.google.code.gson:gson:2.7'
     compile 'ch.acra:acra:4.9.0'
+
+    compile 'com.google.firebase:firebase-storage:11.0.4'
+    compile 'com.google.firebase:firebase-auth:11.0.4'
+    compile 'com.google.firebase:firebase-messaging:11.0.4'
+    compile 'com.google.android.gms:play-services:11.0.4'
+    compile('com.firebase:firebase-jobdispatcher-with-gcm-dep:0.6.0') {
+        exclude module: "play-services-gcm"
+    }
+    compile 'net.grandcentrix.tray:tray:0.12.0'
+    compile 'joda-time:joda-time:2.7'
 
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'de.hdodenhof:circleimageview:2.1.0'
@@ -92,3 +108,4 @@ dependencies {
     compile 'frankiesardo:icepick:3.2.0'
     provided 'frankiesardo:icepick-processor:3.2.0'
 }
+apply plugin: 'com.google.gms.google-services'

@@ -66,4 +66,6 @@
 
     <color name="black">#000</color>
 
+    <item name="android_color_gray" type="color">#C6C6C6</item>
+
 </resources>

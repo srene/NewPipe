@@ -5,27 +5,27 @@
     android:title="@string/settings">
 
     <PreferenceScreen
-        android:fragment="org.schabi.newpipe.settings.VideoAudioSettingsFragment"
+        android:fragment="io.fluentic.ubicdn.settings.VideoAudioSettingsFragment"
         android:icon="?attr/audio"
         android:title="@string/settings_category_video_audio_title"/>
 
     <PreferenceScreen
-        android:fragment="org.schabi.newpipe.settings.DownloadSettingsFragment"
+        android:fragment="io.fluentic.ubicdn.settings.DownloadSettingsFragment"
         android:icon="?attr/download"
         android:title="@string/settings_category_downloads_title"/>
 
     <PreferenceScreen
-        android:fragment="org.schabi.newpipe.settings.AppearanceSettingsFragment"
+        android:fragment="io.fluentic.ubicdn.settings.AppearanceSettingsFragment"
         android:icon="?attr/palette"
         android:title="@string/settings_category_appearance_title"/>
 
     <PreferenceScreen
-        android:fragment="org.schabi.newpipe.settings.HistorySettingsFragment"
+        android:fragment="io.fluentic.ubicdn.settings.HistorySettingsFragment"
         android:icon="?attr/history"
         android:title="@string/settings_category_history_title"/>
 
     <PreferenceScreen
-        android:fragment="org.schabi.newpipe.settings.ContentSettingsFragment"
+        android:fragment="io.fluentic.ubicdn.settings.ContentSettingsFragment"
         android:icon="?attr/language"
         android:title="@string/content"/>
 </PreferenceScreen>

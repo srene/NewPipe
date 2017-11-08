@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.schabi.newpipe.MainActivity2">
+    tools:context="io.fluentic.ubicdn.MainActivity2">
 
     <FrameLayout
         android:id="@+id/fragment_holder"

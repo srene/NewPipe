@@ -8,9 +8,9 @@
     <string name="drawer_item_strategies">Strategies</string>
     <string name="drawer_item_logcat">Logcat</string>
 
+    <string name="progress_auth">Signing In…</string>
 
-
-    <string name="app_name" translatable="false">NewPipe</string>
+    <string name="app_name" translatable="false">ubiCDN</string>
     <string name="main_bg_subtitle">Tap search to get started</string>
     <string name="view_count_text">%1$s views</string>
     <string name="upload_date_text">Published on %1$s</string>
@@ -318,4 +318,141 @@
     <string name="play_queue_stream_detail">Details</string>
     <string name="play_queue_audio_settings">Audio Settings</string>
     <string name="hold_to_append">Hold To Enqueue</string>
+
+
+    <!-- VPN service -->
+    <string name="msg_sure">Are you sure?</string>
+    <string name="msg_started">Enforcing rules</string>
+    <string name="msg_packages">%1$d allowed, %2$d blocked</string>
+    <string name="msg_hosts">%1$d allowed, %2$d blocked, %3$d hosts</string>
+    <string name="msg_waiting">Waiting for event</string>
+    <string name="msg_disabled">NetGuard is disabled, use the switch above to enable NetGuard</string>
+    <string name="msg_revoked">NetGuard has been disabled, likely by using another VPN based app</string>
+    <string name="msg_installed">\'%1$s\' installed</string>
+    <string name="msg_installed_n">Has been installed</string>
+    <string name="msg_access">%1$s attempted internet access</string>
+    <string name="msg_access_n">Attempted internet access</string>
+    <string name="msg_completed">Action completed</string>
+    <string name="msg_vpn">NetGuard uses a local VPN to filter internet traffic.
+For this reason, please allow a VPN connection in the next dialog.
+Your internet traffic is not being sent to a remote VPN server.</string>
+    <string name="msg_autostart">NetGuard could not start automatically. This is likely because of a bug in your Android version.</string>
+    <string name="msg_start_failed">Android refused to start the VPN service at this moment. This is likely because of a bug in your Android version.</string>
+    <string name="msg_try">Try NetGuard</string>
+    <string name="msg_terms">By donating you agree to the <a href="http://www.netguard.me/#terms">terms &amp; conditions</a></string>
+    <string name="msg_dimming">If you cannot press OK in the next dialog, another (screen dimming) app is likely manipulating the screen.</string>
+    <string name="msg_mbday">&#177; %1$.3f&#9650; %2$.3f&#9660; MB/day</string>
+    <string name="msg_kbsec">%7.3f KB/s</string>
+    <string name="msg_mbsec">%7.3f MB/s</string>
+    <string name="msg_kb">%1$7.3f&#9650; %2$7.3f&#9660; KB</string>
+    <string name="msg_mb">%1$7.3f&#9650; %2$7.3f&#9660; MB</string>
+    <string name="msg_gb">%1$7.3f&#9650; %2$7.3f&#9660; GB</string>
+    <string name="msg_count">%dx</string>
+    <string name="msg_doze">For consistent results, the Android battery optimizations should be disabled for NetGuard.
+\n\nIn the next dialog, select \"All apps\" at the top, tap on NetGuard in the list and select and confirm \"Don\'t optimize\".</string>
+    <string name="msg_datasaving">For consistent results, the Android data saving options should be disabled for NetGuard
+\n\nIn the next dialog, enable the options \"Background data\" and \"Unrestricted data usage\"</string>
+    <string name="msg_filter">Using filtering will cause Android to attribute data and power usage to NetGuard - Android assumes the data and power are being used by NetGuard, rather than the original apps</string>
+    <string name="msg_filter4">Android 4 requires filtering to be enabled</string>
+    <string name="msg_log_disabled">Traffic logging is disabled, use the switch above to enable logging. Traffic logging might result in extra battery usage.</string>
+    <string name="msg_clear_rules">This will reset the rules and conditions to their default values</string>
+    <string name="msg_reset_access">This will delete access attempt log lines without allow/block rules</string>
+    <string name="msg_import_last">Last import: %s</string>
+    <string name="msg_downloading">Downloading\n%1s</string>
+    <string name="msg_downloaded">Hosts file downloaded</string>
+    <string name="msg_download_last">Last download: %s</string>
+    <string name="msg_start_forward" formatted="false">Start forwarding from %1$s port %2$d to %3$s:%4$d of \'%5$s\'?</string>
+    <string name="msg_stop_forward">Stop forwarding of %1$s port %2$d?</string>
+    <string name="msg_metered">Network is metered</string>
+    <string name="msg_inactive">No active internet connection</string>
+    <string name="msg_queue">NetGuard is busy</string>
+    <string name="msg_update">Update available, tap to download</string>
+    <string name="msg_usage">You can allow (greenish) or deny (reddish) Wi-Fi or mobile internet access by tapping on the icons next to an app</string>
+    <string name="msg_whitelist">Internet access is allowed by default (blacklist mode), this can be changed in the settings</string>
+    <string name="msg_push">Incoming (push) messages are mostly handled by the system component Play services, which is allowed internet access by default</string>
+    <string name="msg_system">Managing all (system) apps can be enabled in the settings</string>
+    <string name="msg_issue">Please describe the problem and indicate the time of the problem:</string>
+    <string name="msg_vpn_cancelled">VPN connection cancelled\nDid you configure another VPN to be an always-on VPN?</string>
+    <string name="msg_on">Powering down your device with NetGuard enabled, will automatically start NetGuard on powering up your device</string>
+    <string name="msg_unavailable">This feature is not available on this Android version</string>
+
+    <string name="title_root">root</string>
+    <string name="title_mediaserver">mediaserver</string>
+    <string name="title_gpsdaemon" translatable="false">GPS daemon</string>
+    <string name="title_nobody">nobody</string>
+    <string name="title_dontask">Don\'t ask again</string>
+
+
+    <!-- NDN -->
+
+    <string name="ubicdn_name">ubiCDN</string>
+    <string name="service_name">ubiCDN Service</string>
+    <string name="list_name">News Channel</string>
+    <string name="service_stopped">ubiCDN service is stopped</string>
+    <string name="service_started">ubiCDN service is started</string>
+    <string name="stopping_service">Stopping ubiCDN …</string>
+    <string name="starting_service">Starting ubiCDN …</string>
+    <string name="reconnect_to_service">Reconnecting to UbiCDN Service …</string>
+    <string name="loading_logger">Loading logger …</string>
+    <string name="log_settings">Log Settings</string>
+    <string name="checking_on_service">Checking on ubiCDN Service …</string>
+    <string name="checkbox_source">Enable source device</string>
+    <string name="accessibility_open_drawer">Open NFD Navigation Drawer</string>
+    <string name="accessibility_close_drawer">Close NFD Navigation Drawer</string>
+    <string name="menu_item_delete_setting_item">Delete</string>
+    <string name="fragment_logcat_general_operations_category">General Actions</string>
+    <string name="fragment_logcat_tags_n_log_levels">Tags &amp; Log Levels</string>
+    <string name="logcat_reset_log_level_defaults">Reset Log Level Defaults</string>
+    <string name="reset_log_level_dialog_title">Select default value for all tags</string>
+    <string name="route_list_actions_title">Route List Actions</string>
+    <string name="oops">Oops!</string>
+    <string name="error_cannot_communicate_with_service">Not available, check that UbiCDN service is started</string>
+    <string name="route_list_list_of_routes_title">List of Routes</string>
+    <string name="route_list_refresh_route_list">Refresh Route List</string>
+    <string name="route_list_add_route">Add Route</string>
+    <string name="face_list_actions_title">Face List Actions</string>
+    <string name="face_list_refresh_face_list">Refresh Face List</string>
+    <string name="face_list_add_face">Add Face</string>
+    <string name="face_list_list_of_faces_title">List of Faces</string>
+    <string name="fragment_face_details_title">Face Details</string>
+    <string name="menu_item_delete_face_item">Delete</string>
+    <string name="expire_never">Never</string>
+    <string name="face_id">Face ID</string>
+    <string name="local_face_uri">Local FaceURI</string>
+    <string name="remote_face_uri">Remote FaceURI</string>
+    <string name="expires_in">Expires in</string>
+    <string name="face_scope">Face scope</string>
+    <string name="face_persistency">Face persistency</string>
+    <string name="link_type">Link type</string>
+    <string name="in_interests">In interests</string>
+    <string name="out_interests">Out interests</string>
+    <string name="in_data">In data</string>
+    <string name="out_data">Out data</string>
+    <string name="in_bytes">In bytes</string>
+    <string name="out_bytes">Out bytes</string>
+    <string name="in_nacks">In NACKs</string>
+    <string name="out_nacks">Out NACKs</string>
+
+    <string-array name="face_scopes">
+        <item>Non-local</item>
+        <item>Local</item>
+    </string-array>
+
+    <string-array name="face_persistency">
+        <item>Persistent</item>
+        <item>On-demand</item>
+        <item>Permanent</item>
+    </string-array>
+
+    <string-array name="face_link_types">
+        <item>Point-to-point</item>
+        <item>Multi-access</item>
+    </string-array>
+
+    <string name="face_add_dialog_create_face">Create face</string>
+    <string name="route_add_dialog_create_route">Create route</string>
+    <string name="fragment_route_details_title">Route Details</string>
+    <string name="fragment_route_details_next_hops">List of next hops</string>
+    <string name="fragment_route_route_name_title">Route Name</string>
+
 </resources>

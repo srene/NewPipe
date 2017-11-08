@@ -7,27 +7,37 @@
     android:paddingLeft="@dimen/default_padding_left"
     android:paddingRight="@dimen/default_padding_right" >
 
-    <ImageView
-        android:id="@+id/drawer_item_icon"
+     <ImageView
+         android:id="@+id/drawer_item_icon"
+         android:layout_width="match_parent"
+         android:layout_height="200dp"
+         android:layout_gravity="center_vertical"
+         android:src="@drawable/ubicdn_inv_land" />
+     <Switch
+         android:id="@+id/serviceSwitch"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textAppearance="?android:attr/textAppearanceListItemSmall"
+         android:text="UbiCDN Service" />
+     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+               xmlns:tools="http://schemas.android.com/tools"
+               android:id="@+id/drawer_listview"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:choiceMode="singleChoice"
+               android:divider="@android:color/holo_red_dark"
+               android:background="@android:color/holo_red_dark"
+               android:dividerHeight="0dp"
+               tools:context=".DrawerFragment"
+     />
+ </LinearLayout>
+    <!--<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/ubicdn_inv_land" />
-    <Switch
-        android:id="@+id/serviceSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:text="UbiCDN Service" />
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/drawer_listview"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:choiceMode="singleChoice"
-              android:divider="@android:color/holo_red_dark"
-              android:background="@android:color/holo_red_dark"
-              android:dividerHeight="0dp"
-              tools:context=".DrawerFragment"
-    />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#cccc"
+        tools:context=".fragments.DrawerFragment"
+        />-->
